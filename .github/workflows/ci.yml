@@ -13,16 +13,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       RID: ${{ matrix.name }}
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     strategy:
       matrix:
         include:
-          - os: windows-2019
+          - os: windows-2022
             name: win-x86
             param: -x86
-          - os: windows-2019
+          - os: windows-2022
             name: win-x64
             param: -x64
-          - os: windows-2019
+          - os: windows-2022
             name: win-arm64
             param: -arm64
           - os: ubuntu-24.04
@@ -39,9 +40,9 @@ jobs:
             name: linux-musl-arm
           - os: ubuntu-24.04
             name: linux-musl-arm64
-          - os: macos-13
+          - os: macos-14
             name: osx-x64
-          - os: macos-13
+          - os: macos-14
             name: osx-arm64
       fail-fast: false
     steps:
@@ -56,8 +57,11 @@ jobs:
         if: runner.os == 'macOS'
         run: ./build.libgit2.sh
       - name: Setup QEMU
-        if: matrix.name == 'linux-musl-arm' || matrix.name == 'linux-musl-arm64'
+        if: runner.os == 'Linux' && (matrix.name == 'linux-arm' || matrix.name == 'linux-arm64' || matrix.name == 'linux-ppc64le' || matrix.name == 'linux-musl-arm' || matrix.name == 'linux-musl-arm64')
         run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Set up Docker Buildx
+        if: runner.os == 'Linux'
+        uses: docker/setup-buildx-action@v3
       - name: Build Linux
         if: runner.os == 'Linux'
         run: ./dockerbuild.sh
@@ -72,6 +76,7 @@ jobs:
      runs-on: ubuntu-24.04
      env:
        DOTNET_NOLOGO: true
+       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
      steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2

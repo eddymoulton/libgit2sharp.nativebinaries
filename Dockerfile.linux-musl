@@ -1,6 +1,8 @@
-ARG ARCH='amd64'
-FROM multiarch/alpine:${ARCH}-v3.13
-RUN apk add --no-cache bash build-base cmake
+# Native musl build for the current platform (use buildx --platform to target arch).
+# Replaces deprecated multiarch/alpine; official Alpine is multi-platform.
+FROM alpine:3.19
+
+RUN apk add --no-cache bash build-base cmake openssl-dev
 
 WORKDIR /nativebinaries
 COPY . /nativebinaries/
