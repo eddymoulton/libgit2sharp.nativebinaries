@@ -20,7 +20,7 @@ else
     dockerfile="Dockerfile.linux"
 fi
 
-docker buildx build --platform "$platform" -t $RID -f $dockerfile .
+docker buildx build --platform "$platform" --load -t $RID -f $dockerfile .
 
 docker run --platform "$platform" -t -e RID=$RID --name=$RID $RID
 
