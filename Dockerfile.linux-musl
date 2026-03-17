@@ -2,7 +2,7 @@
 # Replaces deprecated multiarch/alpine; official Alpine is multi-platform.
 FROM alpine:3.19
 
-RUN apk add --no-cache bash build-base cmake openssl-dev
+RUN apk add --no-cache bash build-base cmake openssl-dev libssh2-dev
 
 WORKDIR /nativebinaries
 COPY . /nativebinaries/
