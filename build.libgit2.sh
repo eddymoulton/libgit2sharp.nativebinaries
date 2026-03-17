@@ -9,15 +9,12 @@ ARCH=`uname -m`
 PACKAGEPATH="nuget.package/runtimes"
 OSXARCHITECTURE=$ARCH
 
-USESSH="ON"
-
 if [[ $OS == "Darwin" ]]; then
     USEHTTPS="ON"
     if [[ $RID == "osx-arm64" ]]; then
         OSXARCHITECTURE="arm64"
     elif [[ $RID == "osx-x64" ]]; then
         OSXARCHITECTURE="x86_64"
-        USESSH="exec"
     fi
 else
     USEHTTPS="OpenSSL-Dynamic"
@@ -31,7 +28,7 @@ export _BINPATH=`pwd`
 
 cmake -DCMAKE_BUILD_TYPE:STRING=Release \
       -DBUILD_TESTS:BOOL=OFF \
-      -DUSE_SSH=$USESSH \
+      -DUSE_SSH=ON \
       -DLIBGIT2_FILENAME=git2-$SHORTSHA \
       -DCMAKE_OSX_ARCHITECTURES=$OSXARCHITECTURE \
       -DUSE_HTTPS=$USEHTTPS \

@@ -40,9 +40,9 @@ jobs:
             name: linux-musl-arm
           - os: ubuntu-24.04
             name: linux-musl-arm64
-          - os: macos-14
+          - os: macos-26-intel
             name: osx-x64
-          - os: macos-14
+          - os: macos-26
             name: osx-arm64
       fail-fast: false
     steps:
